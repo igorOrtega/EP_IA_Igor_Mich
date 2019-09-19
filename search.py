@@ -135,28 +135,38 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     # Enquanto a fronteira nao estiver vazia
     while not fronteira.isEmpty():
 
+        # pega tupla com menor custo da fronteira, ou seja, no mais "barato"
         noAtual, acoes, custoAnterior = fronteira.pop()
 
+        # se o no atual ainda nao foi visita, coloca na lista de visitados e analisa
         if noAtual not in nosVisitados:
             nosVisitados.append(noAtual)
 
+            # verifica se eh o no meta
             if problem.isGoalState(noAtual):
                 return acoes
 
+            # se nao for no meta analisa os filhos, ou sucessores
             filhos = problem.getSuccessors(noAtual)
 
+            # pega numero de filhos que o no possui (tamanho da lista)
             numeroDeFilhos=len(filhos)
 
+            # loop que analisa nos filhos e calcula custo de cada um (custo total + custo heuristico)
             for i in range(0, numeroDeFilhos):
-
+                
+                # varre nos vizinhos
                 noFilho = (filhos[i])
-
+                # pega valores
                 proximoNo, acao, custo = noFilho
 
+                # acoes necessarias pra fechar ate o no filho em questao
                 acaoTotal = acoes + [acao]
+                # custo total para chegar ate o no filho em questao
                 custoTotal = custoAnterior + custo
+                # custo heristico ate o no em questao (custo total + valor da funcao heuristica)
                 custoHeuristico = custoTotal + heuristic(proximoNo,problem)
-
+                # adiciona no filho na fronteira, prioridade de acordo com o custo heuristico
                 fronteira.push((proximoNo, acaoTotal, custoTotal),custoHeuristico)
     
     util.raiseNotDefined()
